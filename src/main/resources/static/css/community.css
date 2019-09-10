@@ -1,0 +1,76 @@
+body{
+    background-color: #efefef;
+}
+.main{
+    margin: 30px;
+    background-color: white;
+}
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
+.icon{
+    cursor: pointer;
+}
+.icon::before{
+    padding-right: 5px
+}
+.icon:hover{
+    color: 	#EE0000;
+}
+.comments{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+.active{
+    color:#EE0000 ;
+}
+.twocomment{
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding-top: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.faceUrl{
+    width:38px;
+    height:38px
+}
+.media-h5{
+    margin-top: 10px;
+    color:#2aabd2
+}
+.meun{
+    margin-top: 5px;
+    color: #CDC9C9
+}
+.pull-right{
+    float: right
+}
+.bianji{
+    color:#8E8E8E ;
+    margin-left: 8px;
+}
+.bianji:hover{
+    color: #337ab7;
+}
+.questionul{
+    line-height: 20px;
+    font-size: 14px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
+.label-tag{
+    cursor: pointer;
+    margin: 5px 5px;
+    white-space: normal;
+    display: inline-block;
+}
+.quesdesc{
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}

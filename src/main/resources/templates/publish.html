@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/js/editormd.min.js" type="application/javascript"></script>
+    <title>码匠社区</title>
+</head>
+<body>
+<div th:include="navbar :: nav"></div>
+
+
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+           <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发布</h2>
+            <hr>
+
+            <form action="/publish" method="post">
+                <input type="hidden" name="id" th:value="${id}">
+                <div class="form-group">
+                    <label for="title">问题标题</label>
+                    <input type="text" class="form-control" name="title" th:value="${title}" id="title" placeholder="问题标题.....">
+                </div>
+                <div class="form-group"  id="test-editor">
+                    <label for="description">问题补充</label>
+                    <textarea class="form-control" style="display:none;"
+                              id="description" th:text="${description}" name="description" rows="8">
+                    </textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        var editor = editormd("test-editor", {
+                            // width  : "100%",
+                             height : "350px",
+                            path   : "/lib/",
+                            delay:0,
+                            watch:false,
+                            placeholder:"请输入问题内容..."
+                        });
+                    });
+                </script>
+
+                <div class="form-group">
+                    <label for="tag">添加标签</label>
+                    <input type="text" class="form-control" name="tag" id="tag" th:value="${tag}" onclick="showTags()" autocomplete="off"
+                           placeholder="请输入标签,标签之间以,分隔.....">
+                </div>
+
+                <!--标签库-->
+                <div id="show-tags" style="display: none">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" th:each="classTag,classTagStat :${alltags}">
+                            <a th:href="${'#'+classTag.className}" aria-controls="home" role="tab" data-toggle="tab"
+                               th:text="${classTag.className}" th:class="${classTagStat.first?'active':''}">开发语言</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content" style="margin-top: 3px">
+                        <div role="tabpanel"  th:id="${classTag.className}" th:each="classTag :${alltags}"
+                             th:class="${classTagStat.first?'active tab-pane':'tab-pane'}">
+                            <span class="label label-info label-tag" th:each="smalltags : ${classTag.tags}">
+                                <span class="glyphicon glyphicon-tags" aria-hidden="true" onclick="selectTag(this)"
+                                      th:text="${smalltags}" th:data-tag="${smalltags}">java</span>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="margin-top: 20px">
+                    <span class="alert alert-danger" role="alert" th:if="${erros!=null}" th:text="${erros}"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-publish">发布</button>
+            </form>
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h2>问题发起指南</h2>
+        </div>
+    </div>
+</div>
+</body>
+</html>
