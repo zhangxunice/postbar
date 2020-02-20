@@ -29,17 +29,17 @@ public class CustomErroController implements ErrorController {
     @RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView errorHtml(HttpServletRequest request, Model model) {
         HttpStatus status = this.getStatus(request);
-        if (status.is4xxClientError()){
-            model.addAttribute("msg","你所访问的页面不存在");
+        if (status.is4xxClientError()) {
+            model.addAttribute("msg", "你所访问的页面不存在");
         }
-        if (status.is5xxServerError()){
-            model.addAttribute("msg","服务器出差，请稍后再试");
+        if (status.is5xxServerError()) {
+            model.addAttribute("msg", "服务器出差，请稍后再试");
         }
         return new ModelAndView("error");
     }
 
     protected HttpStatus getStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer)request.getAttribute("javax.servlet.error.status_code");
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         if (statusCode == null) {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         } else {

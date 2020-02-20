@@ -15,9 +15,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private SessionInterceptor sessionInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] exclude={"/login","/user/login","/loginout"};
+        String[] exclude = {"/login", "/user/login", "/loginout"};
         registry.addInterceptor(sessionInterceptor).addPathPatterns("/**").excludePathPatterns(exclude);
     }
 }

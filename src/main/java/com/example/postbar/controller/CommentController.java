@@ -34,15 +34,15 @@ public class CommentController {
 
     @PostMapping("/comment")
     @ResponseBody
-    public Object comment(@RequestBody CommentDto commentDto, HttpServletRequest request){
-        User user=(User) request.getSession().getAttribute("user");
-        if (user==null){
+    public Object comment(@RequestBody CommentDto commentDto, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
             throw new CustomException(CustomEnum.NO_LOGIN);
         }
-        if (commentDto==null|| StringUtils.isBlank(commentDto.getComment())){
+        if (commentDto == null || StringUtils.isBlank(commentDto.getComment())) {
             throw new CustomException(CustomEnum.COMMENT_IS_EMPTY);
         }
-        Comment comment=new Comment();
+        Comment comment = new Comment();
         comment.setId(String.valueOf(UUID.randomUUID()));
         comment.setParentId(commentDto.getParentId());
         comment.setCommentId(String.valueOf(1));
@@ -52,14 +52,14 @@ public class CommentController {
         comment.setType(commentDto.getType());
         comment.setCommentCount(0);
         commentService.insertcomment(comment);
-        return ResultDto.ok(200,"请求成功");
+        return ResultDto.ok(200, "请求成功");
     }
 
 
     @RequestMapping("/comment/{id}")
     @ResponseBody
-    public ResultDto twocomment(@PathVariable(name = "id") String id){
-        List<CommentVO> commentVOList=commentService.getlistById(id, TypeEnum.COMMENT.getType());
+    public ResultDto twocomment(@PathVariable(name = "id") String id) {
+        List<CommentVO> commentVOList = commentService.getlistById(id, TypeEnum.COMMENT.getType());
         return ResultDto.ok(commentVOList);
     }
 }

@@ -37,67 +37,66 @@ public class QuestionService {
     private QuestionMapper questionMapper;
 
 
-
-    public PageDto questionlist(Integer page,Integer pagesize){
+    public PageDto questionlist(Integer page, Integer pagesize) {
         //Integer offsize=pagesize*(page-1);
-        Page<Question> questionPage=new Page<>(page,pagesize);
-        QueryWrapper<Question> questionQueryWrapper=new QueryWrapper<>();
+        Page<Question> questionPage = new Page<>(page, pagesize);
+        QueryWrapper<Question> questionQueryWrapper = new QueryWrapper<>();
         questionQueryWrapper.orderByDesc("gmt_create");
-        IPage<Question> goodsIPage=questionMapper.selectPage(questionPage,questionQueryWrapper);
-        List<Question> questionList=goodsIPage.getRecords();
-        List<QuestionDto> questionDtos=new ArrayList<>();
-         PageDto pageDto=new PageDto();
-        for (Question question:questionList){
-            QuestionDto questionDto=new QuestionDto();
-            User user=userMapper.selectById(question.getCreator());
-            BeanUtils.copyProperties(question,questionDto);
+        IPage<Question> goodsIPage = questionMapper.selectPage(questionPage, questionQueryWrapper);
+        List<Question> questionList = goodsIPage.getRecords();
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        PageDto pageDto = new PageDto();
+        for (Question question : questionList) {
+            QuestionDto questionDto = new QuestionDto();
+            User user = userMapper.selectById(question.getCreator());
+            BeanUtils.copyProperties(question, questionDto);
             questionDto.setUser(user);
             questionDtos.add(questionDto);
         }
         pageDto.setQuestionDtoList(questionDtos);
-        pageDto.setpages(goodsIPage.getPages(),goodsIPage.getTotal(),page,pagesize);
+        pageDto.setpages(goodsIPage.getPages(), goodsIPage.getTotal(), page, pagesize);
         return pageDto;
     }
 
 
-    public  PageDto selectbyid(String userid, Integer page, Integer pagesize) {
-        Page<Question> questionPage=new Page<>(page,pagesize);
-        QueryWrapper<Question> questionQueryWrapper=new QueryWrapper<>();
-        questionQueryWrapper.eq("creator",userid).orderByDesc("gmt_create");
-        IPage<Question> goodsIPage=questionMapper.selectPage(questionPage,questionQueryWrapper);
-        List<Question> questionList=goodsIPage.getRecords();
-        List<QuestionDto> questionDtos=new ArrayList<>();
-        PageDto pageDto=new PageDto();
-        for (Question question:questionList){
-            QuestionDto questionDto=new QuestionDto();
-            User user=userMapper.selectById(question.getCreator());
-            BeanUtils.copyProperties(question,questionDto);
+    public PageDto selectbyid(String userid, Integer page, Integer pagesize) {
+        Page<Question> questionPage = new Page<>(page, pagesize);
+        QueryWrapper<Question> questionQueryWrapper = new QueryWrapper<>();
+        questionQueryWrapper.eq("creator", userid).orderByDesc("gmt_create");
+        IPage<Question> goodsIPage = questionMapper.selectPage(questionPage, questionQueryWrapper);
+        List<Question> questionList = goodsIPage.getRecords();
+        List<QuestionDto> questionDtos = new ArrayList<>();
+        PageDto pageDto = new PageDto();
+        for (Question question : questionList) {
+            QuestionDto questionDto = new QuestionDto();
+            User user = userMapper.selectById(question.getCreator());
+            BeanUtils.copyProperties(question, questionDto);
             questionDto.setUser(user);
             questionDtos.add(questionDto);
         }
         pageDto.setQuestionDtoList(questionDtos);
-        pageDto.setpages(goodsIPage.getPages(),goodsIPage.getTotal(),page,pagesize);
+        pageDto.setpages(goodsIPage.getPages(), goodsIPage.getTotal(), page, pagesize);
         return pageDto;
     }
 
     public QuestionDto getlistByid(String id) {
-        Question question=questionMapper.selectById(id);
-        if (StringUtils.isEmpty(question)){
-            throw new  CustomException(CustomEnum.QUESTION_NOT_FOUND);
+        Question question = questionMapper.selectById(id);
+        if (StringUtils.isEmpty(question)) {
+            throw new CustomException(CustomEnum.QUESTION_NOT_FOUND);
         }
-        question.setViewCount(question.getViewCount()+1);
+        question.setViewCount(question.getViewCount() + 1);
         questionMapper.updateById(question);
-        QuestionDto questionDto=new QuestionDto();
-        BeanUtils.copyProperties(question,questionDto);
-        User user=userMapper.selectById(question.getCreator());
+        QuestionDto questionDto = new QuestionDto();
+        BeanUtils.copyProperties(question, questionDto);
+        User user = userMapper.selectById(question.getCreator());
         questionDto.setUser(user);
         return questionDto;
     }
 
 
-    public void publishquestion(Question question){
+    public void publishquestion(Question question) {
         System.out.println(question.getId());
-        if (org.apache.commons.lang3.StringUtils.isBlank(question.getId())){
+        if (org.apache.commons.lang3.StringUtils.isBlank(question.getId())) {
             question.setId(String.valueOf(UUID.randomUUID()));
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
@@ -105,25 +104,25 @@ public class QuestionService {
             question.setViewCount(0);
             question.setLikeCount(0);
             questionMapper.insert(question);
-        }else {
+        } else {
             question.setGmtModified(question.getGmtCreate());
             questionMapper.updateById(question);
         }
     }
 
-        public List<QuestionDto> getlistBytags(QuestionDto queryDto) {
-        if (org.apache.commons.lang3.StringUtils.isBlank(queryDto.getTag())){
+    public List<QuestionDto> getlistBytags(QuestionDto queryDto) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(queryDto.getTag())) {
             return new ArrayList<>();
         }
-        String[] tags= org.apache.commons.lang3.StringUtils.split(queryDto.getTag(),",");
-        String regexpTag= Arrays.stream(tags).collect(Collectors.joining("|"));
-        Question question=new Question();
+        String[] tags = org.apache.commons.lang3.StringUtils.split(queryDto.getTag(), ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
         question.setId(queryDto.getId());
         question.setTag(regexpTag);
-        List<Question> questionList=questionMapper.getlistBytags(question);
-        List<QuestionDto> questionDtoList=questionList.stream().map(q->{
-            QuestionDto questionDto=new QuestionDto();
-            BeanUtils.copyProperties(q,questionDto);
+        List<Question> questionList = questionMapper.getlistBytags(question);
+        List<QuestionDto> questionDtoList = questionList.stream().map(q -> {
+            QuestionDto questionDto = new QuestionDto();
+            BeanUtils.copyProperties(q, questionDto);
             return questionDto;
         }).collect(Collectors.toList());
         return questionDtoList;

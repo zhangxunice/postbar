@@ -33,14 +33,14 @@ public class IndexController {
     @Autowired
     private QuestionMapper questionMapper;
 
-       @GetMapping("/")
-       public String index(Model model,HttpServletRequest request,
-                           @RequestParam(value = "page",defaultValue = "1")Integer page,
-                           @RequestParam(value = "pagesize",defaultValue = "5")Integer pagesize){
+    @GetMapping("/")
+    public String index(Model model, HttpServletRequest request,
+                        @RequestParam(value = "page", defaultValue = "1") Integer page,
+                        @RequestParam(value = "pagesize", defaultValue = "5") Integer pagesize) {
 
 
-        PageDto pageDto=questionService.questionlist(page,pagesize);
-        model.addAttribute("pageDto",pageDto);
+        PageDto pageDto = questionService.questionlist(page, pagesize);
+        model.addAttribute("pageDto", pageDto);
 //           User user= (User) request.getSession().getAttribute("user");
 //           System.out.println(user);
         return "index";

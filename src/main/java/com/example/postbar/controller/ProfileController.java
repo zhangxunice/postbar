@@ -27,21 +27,21 @@ public class ProfileController {
     private QuestionService questionService;
 
     @GetMapping("/profile/{action}")
-    public String profile(@PathVariable(name = "action")String action, Model model,
-                          @RequestParam(value = "page",defaultValue = "1")Integer page,
-                          @RequestParam(value = "pagesize",defaultValue = "5")Integer pagesize,
-                          HttpServletRequest request){
-        if ("question".equals(action)){
-            model.addAttribute("section","question");
-            model.addAttribute("sectionName","我的提问");
+    public String profile(@PathVariable(name = "action") String action, Model model,
+                          @RequestParam(value = "page", defaultValue = "1") Integer page,
+                          @RequestParam(value = "pagesize", defaultValue = "5") Integer pagesize,
+                          HttpServletRequest request) {
+        if ("question".equals(action)) {
+            model.addAttribute("section", "question");
+            model.addAttribute("sectionName", "我的提问");
         }
-        if ("replise".equals(action)){
-            model.addAttribute("section","replise");
-            model.addAttribute("sectionName","最新回复");
+        if ("replise".equals(action)) {
+            model.addAttribute("section", "replise");
+            model.addAttribute("sectionName", "最新回复");
         }
-        User user= (User) request.getSession().getAttribute("user");
-        PageDto pageDto=questionService.selectbyid( user.getId(),page,pagesize);
-        model.addAttribute("pagedto",pageDto);
+        User user = (User) request.getSession().getAttribute("user");
+        PageDto pageDto = questionService.selectbyid(user.getId(), page, pagesize);
+        model.addAttribute("pagedto", pageDto);
         return "profile";
     }
 

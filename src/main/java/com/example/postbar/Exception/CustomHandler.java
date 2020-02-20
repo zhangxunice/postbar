@@ -26,14 +26,14 @@ import java.io.PrintWriter;
 public class CustomHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     ModelAndView handleControllerException(Throwable e, Model model, HttpServletRequest request, HttpServletResponse response) {
-        ResultDto resultDto=null;
-        String contentType=request.getContentType();
-        if ("application/json".equals(contentType)){
+        ResultDto resultDto = null;
+        String contentType = request.getContentType();
+        if ("application/json".equals(contentType)) {
             //返回JSON
-            if (e instanceof CustomException){
-                resultDto=resultDto.errof((CustomException) e);
-            }else {
-                resultDto=resultDto.errof(CustomEnum.SYS_ERROR);
+            if (e instanceof CustomException) {
+                resultDto = resultDto.errof((CustomException) e);
+            } else {
+                resultDto = resultDto.errof(CustomEnum.SYS_ERROR);
             }
 
             try {
@@ -47,12 +47,12 @@ public class CustomHandler extends ResponseEntityExceptionHandler {
                 e1.printStackTrace();
             }
             return null;
-        }else {
+        } else {
             //返回页面
-            if (e instanceof CustomException){
-                model.addAttribute("msg",((CustomException) e).getMsg());
-            }else {
-                model.addAttribute("msg","服务器出差，请稍后再试");
+            if (e instanceof CustomException) {
+                model.addAttribute("msg", ((CustomException) e).getMsg());
+            } else {
+                model.addAttribute("msg", "服务器出差，请稍后再试");
             }
             return new ModelAndView("error.html");
         }

@@ -31,13 +31,13 @@ public class QuestionController {
     private CommentService commentService;
 
     @GetMapping("/question/{id}")
-    public String questionid(@PathVariable(name = "id")String id, Model model){
-        QuestionDto questionDto=questionService.getlistByid(id);
-        List<QuestionDto> tagsquestion=questionService.getlistBytags(questionDto);
-        List<CommentVO> commentDtoList=commentService.getlistById(id, TypeEnum.QUESTION.getType());
-        model.addAttribute("comments",commentDtoList);
-        model.addAttribute("question",questionDto);
-        model.addAttribute("tagsquestion",tagsquestion);
+    public String questionid(@PathVariable(name = "id") String id, Model model) {
+        QuestionDto questionDto = questionService.getlistByid(id);
+        List<QuestionDto> tagsquestion = questionService.getlistBytags(questionDto);
+        List<CommentVO> commentDtoList = commentService.getlistById(id, TypeEnum.QUESTION.getType());
+        model.addAttribute("comments", commentDtoList);
+        model.addAttribute("question", questionDto);
+        model.addAttribute("tagsquestion", tagsquestion);
         return "question";
     }
 

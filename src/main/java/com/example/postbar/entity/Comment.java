@@ -3,7 +3,6 @@ package com.example.postbar.entity;
 import lombok.Data;
 
 
-
 /**
  * @author zhangxu
  * @title
